@@ -1,0 +1,91 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+   http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+      <!--    1- create user table -->
+    <changeSet id="114903262020" author="maroof">
+        <sql>
+            CREATE TABLE users
+            (
+            id         NUMBER,
+            user_name  VARCHAR2(20),
+            email      VARCHAR2(50),
+            password   VARCHAR2(120)
+            );
+
+
+            ALTER TABLE users ADD (
+            CONSTRAINT user_PK
+            PRIMARY KEY
+            (id)
+            ENABLE VALIDATE);
+        </sql>
+
+    </changeSet>
+
+    <changeSet id="120403262020" author="maroof">
+        <sql>
+            CREATE TABLE ROLES
+            (
+            id    NUMBER,
+            name  VARCHAR2(20)
+            );
+
+
+            ALTER TABLE ROLES ADD (
+            CONSTRAINT ROLES_PK
+            PRIMARY KEY
+            (id)
+            ENABLE VALIDATE);
+        </sql>
+    </changeSet>
+    <changeSet id="120903262020" author="maroof">
+        <sql>
+            CREATE TABLE USERS_ROLES
+            (
+            user_id  NUMBER,
+            role_id  NUMBER
+            );
+
+
+            ALTER TABLE USERS_ROLES ADD (
+            FOREIGN KEY (user_id)
+            REFERENCES USERS (ID)
+            ENABLE VALIDATE,
+            FOREIGN KEY (role_id)
+            REFERENCES ROLES (ID)
+            ENABLE VALIDATE);
+        </sql>
+    </changeSet>
+<!--    fir creating roles -->
+    <changeSet id="133703262020" author="maroof">
+        <sql>
+            Insert into ROLES
+            (ID, NAME)
+            Values
+            (2, 'ROLE_MODERATOR');
+            Insert into ROLES
+            (ID, NAME)
+            Values
+            (1, 'ROLE_USER');
+            Insert into ROLES
+            (ID, NAME)
+            Values
+            (3, 'ROLE_ADMIN');
+            COMMIT;
+
+        </sql>
+    </changeSet>
+<!--    create sequences -->
+    <changeSet id="1401103262020" author="maroof">
+        <createSequence sequenceName="USERS_SEQ" startValue="1"
+                        incrementBy="1" />
+    </changeSet>
+    <changeSet id="140303262020" author="maroof">
+        <createSequence sequenceName="ROLES_SEQ" startValue="1" incrementBy="1"/>
+    </changeSet>
+
+</databaseChangeLog>
